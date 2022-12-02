@@ -1,23 +1,28 @@
-import { AnyRouter, inferRouterContext, inferRouterError, ProcedureType, TRPCError } from "https://esm.sh/@trpc/server@10.4.2";
+import {
+  AnyRouter,
+  inferRouterContext,
+  inferRouterError,
+  ProcedureType,
+  TRPCError,
+} from "https://esm.sh/@trpc/server@10.4.2";
 import { ResponseMeta } from "https://esm.sh/@trpc/server@10.4.2/http";
 import { TRPCResponse } from "https://esm.sh/@trpc/server@10.4.2/rpc";
 import * as Drash from "https://deno.land/x/drash@v2.7.1/mod.ts";
-
 
 export declare type ResponseMetaFn<TRouter extends AnyRouter> = (opts: {
   data: TRPCResponse<unknown, inferRouterError<TRouter>>[];
   ctx?: inferRouterContext<TRouter>;
   /**
    * The different tRPC paths requested
-   **/
+   */
   paths?: string[];
-  type: ProcedureType | 'unknown';
+  type: ProcedureType | "unknown";
   errors: TRPCError[];
 }) => ResponseMeta;
 
 export type OnErrorFunction<TRouter extends AnyRouter, TRequest> = (opts: {
   error: TRPCError;
-  type: ProcedureType | 'unknown';
+  type: ProcedureType | "unknown";
   path: string | undefined;
   req: TRequest;
   input: unknown;
@@ -50,23 +55,23 @@ export type CreateContextFn<TRouter extends AnyRouter> = (opts: {
   req: Drash.Request;
 }) => inferRouterContext<TRouter> | Promise<inferRouterContext<TRouter>>;
 
-export type CreateContextOption<TRouter extends AnyRouter> =
-  unknown extends inferRouterContext<TRouter>
-    ? {
-        /**
-         * @link https://trpc.io/docs/context
-         **/
-        createContext?: CreateContextFn<TRouter>;
-      }
-    : {
-        /**
-         * @link https://trpc.io/docs/context
-         **/
-        createContext: CreateContextFn<TRouter>;
-      };
+export type CreateContextOption<TRouter extends AnyRouter> = unknown extends
+  inferRouterContext<TRouter> ? {
+    /**
+     * @link https://trpc.io/docs/context
+     */
+    createContext?: CreateContextFn<TRouter>;
+  }
+  : {
+    /**
+     * @link https://trpc.io/docs/context
+     */
+    createContext: CreateContextFn<TRouter>;
+  };
 
 export type DrashHandlerOptions<TRouter extends AnyRouter> =
-  HTTPBaseHandlerOptions<TRouter, Request> & CreateContextOption<TRouter>;
+  & HTTPBaseHandlerOptions<TRouter, Request>
+  & CreateContextOption<TRouter>;
 
 export type DrashRequestHandlerOptions<TRouter extends AnyRouter> = {
   req: Drash.Request;

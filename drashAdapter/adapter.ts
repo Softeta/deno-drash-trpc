@@ -35,11 +35,11 @@ export async function drashHandler<TRouter extends AnyRouter>(
   });
 
   for (const [key, value] of Object.entries(result.headers ?? {})) {
-    if (typeof value === 'undefined') {
+    if (typeof value === "undefined") {
       continue;
     }
 
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       res.headers.set(key, value);
       continue;
     }
