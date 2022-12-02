@@ -1,10 +1,11 @@
 import { resolveHTTPResponse } from "https://esm.sh/@trpc/server@10.4.2/http";
 import { AnyRouter } from "https://esm.sh/@trpc/server@10.4.2";
 import { DrashRequestHandlerOptions } from "./types.ts";
+import { HTTPResponse } from "https://esm.sh/v99/@trpc/server@10.4.2/dist/http/internals/types.d.ts";
 
 export async function drashHandler<TRouter extends AnyRouter>(
   opts: DrashRequestHandlerOptions<TRouter>,
-): Promise<Response> {
+): Promise<HTTPResponse> {
   const createContext = async () => {
     return await opts.createContext?.({ req: opts.req });
   };
@@ -30,23 +31,22 @@ export async function drashHandler<TRouter extends AnyRouter>(
     },
   });
 
-  const res = new Response(result.body, {
-    status: result.status,
-  });
-
   for (const [key, value] of Object.entries(result.headers ?? {})) {
     if (typeof value === "undefined") {
       continue;
     }
 
     if (typeof value === "string") {
-      res.headers.set(key, value);
+      opts.res.headers.set(key, value);
       continue;
     }
 
     for (const v of value) {
-      res.headers.append(key, v);
+      opts.res.headers.append(key, v);
     }
   }
-  return res;
+  
+  opts.res.text('', result.status);
+  opts.res.send('application/json', result.body ?? '');
+  return result;
 }

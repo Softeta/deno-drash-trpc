@@ -75,5 +75,6 @@ export type DrashHandlerOptions<TRouter extends AnyRouter> =
 
 export type DrashRequestHandlerOptions<TRouter extends AnyRouter> = {
   req: Drash.Request;
+  res: Drash.Response;
   endpoint: string;
 } & DrashHandlerOptions<TRouter>;
