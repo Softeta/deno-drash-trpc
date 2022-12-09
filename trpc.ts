@@ -1,14 +1,14 @@
-import * as trpc from "https://esm.sh/@trpc/server@10.4.2";
+import { initTRPC, inferAsyncReturnType } from './deps.ts';
 
-import { CreateContextFnOptions } from "./drashAdapter/types.ts";
+import { CreateContextFnOptions } from './drashAdapter/types.ts';
 
 export function createContext({ req }: CreateContextFnOptions) {
   const user = { name: req.headers.get("username") ?? "anonymous" };
   return { req, user };
 }
-export type Context = trpc.inferAsyncReturnType<typeof createContext>;
+export type Context = inferAsyncReturnType<typeof createContext>;
 
-export const t = trpc.initTRPC.context<Context>().create();
+export const t = initTRPC.context<Context>().create();
 
 export const appRouter = t.router({
   // deno-lint-ignore no-unused-vars

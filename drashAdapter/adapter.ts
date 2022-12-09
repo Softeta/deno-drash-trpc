@@ -1,7 +1,5 @@
-import { resolveHTTPResponse } from "https://esm.sh/@trpc/server@10.4.2/http";
-import { AnyRouter } from "https://esm.sh/@trpc/server@10.4.2";
-import { DrashRequestHandlerOptions } from "./types.ts";
-import { HTTPResponse } from "https://esm.sh/v99/@trpc/server@10.4.2/dist/http/internals/types.d.ts";
+import { AnyRouter, resolveHTTPResponse, HTTPResponse } from '../deps.ts';
+import { DrashRequestHandlerOptions } from './types.ts';
 
 export async function drashHandler<TRouter extends AnyRouter>(
   opts: DrashRequestHandlerOptions<TRouter>,
@@ -26,8 +24,8 @@ export async function drashHandler<TRouter extends AnyRouter>(
     router: opts.router,
     batching: opts.batching,
     responseMeta: opts.responseMeta,
-    onError(o) {
-      opts?.onError?.({ ...o, req: opts.req });
+    onError(o: unknown) {
+      opts?.onError?.({...o, req: opts.req });
     },
   });
 
@@ -45,7 +43,7 @@ export async function drashHandler<TRouter extends AnyRouter>(
       opts.res.headers.append(key, v);
     }
   }
-  
+
   opts.res.text('', result.status);
   opts.res.send('application/json', result.body ?? '');
   return result;

@@ -1,8 +1,11 @@
-import { serve } from 'https://deno.land/std@0.140.0/http/server.ts';
-import { initTRPC, inferAsyncReturnType } from 'npm:@trpc/server';
-import { z } from 'npm:zod';
-import { FetchCreateContextFnOptions } from 'npm:@trpc/server/adapters/fetch';
-import { fetchRequestHandler } from 'npm:@trpc/server/adapters/fetch';
+import {
+  serve,
+  initTRPC,
+  inferAsyncReturnType,
+  z,
+  FetchCreateContextFnOptions,
+  fetchRequestHandler,
+} from './deps.ts';
 
 export function createContext({ req }: FetchCreateContextFnOptions) {
   const user = { name: req.headers.get('username') ?? 'anonymous' };
@@ -47,4 +50,5 @@ function handler(request: Request) {
     createContext,
   });
 }
+
 serve(handler, { port: 3333 });

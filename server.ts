@@ -1,6 +1,6 @@
-import { Server } from "https://deno.land/x/drash@v2.7.1/mod.ts";
+import { Server } from './deps.ts';
 
-import { TrpcResource } from "./resources/trpc.ts";
+import { TrpcResource } from './resources/trpc.ts';
 
 // Create and run your server
 const server = new Server({

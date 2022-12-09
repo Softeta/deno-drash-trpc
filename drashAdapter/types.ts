@@ -4,10 +4,11 @@ import {
   inferRouterError,
   ProcedureType,
   TRPCError,
-} from "https://esm.sh/@trpc/server@10.4.2";
-import { ResponseMeta } from "https://esm.sh/@trpc/server@10.4.2/http";
-import { TRPCResponse } from "https://esm.sh/@trpc/server@10.4.2/rpc";
-import * as Drash from "https://deno.land/x/drash@v2.7.1/mod.ts";
+  TRPCResponse,
+  ResponseMeta,
+  Request,
+  Response,
+} from '../deps.ts';
 
 export declare type ResponseMetaFn<TRouter extends AnyRouter> = (opts: {
   data: TRPCResponse<unknown, inferRouterError<TRouter>>[];
@@ -16,13 +17,13 @@ export declare type ResponseMetaFn<TRouter extends AnyRouter> = (opts: {
    * The different tRPC paths requested
    */
   paths?: string[];
-  type: ProcedureType | "unknown";
+  type: ProcedureType | 'unknown';
   errors: TRPCError[];
 }) => ResponseMeta;
 
 export type OnErrorFunction<TRouter extends AnyRouter, TRequest> = (opts: {
   error: TRPCError;
-  type: ProcedureType | "unknown";
+  type: ProcedureType | 'unknown';
   path: string | undefined;
   req: TRequest;
   input: unknown;
@@ -48,11 +49,11 @@ export interface HTTPBaseHandlerOptions<TRouter extends AnyRouter, TRequest>
 }
 
 export type CreateContextFnOptions = {
-  req: Drash.Request;
+  req: Request;
 };
 
 export type CreateContextFn<TRouter extends AnyRouter> = (opts: {
-  req: Drash.Request;
+  req: Request;
 }) => inferRouterContext<TRouter> | Promise<inferRouterContext<TRouter>>;
 
 export type CreateContextOption<TRouter extends AnyRouter> = unknown extends
@@ -74,7 +75,7 @@ export type DrashHandlerOptions<TRouter extends AnyRouter> =
   & CreateContextOption<TRouter>;
 
 export type DrashRequestHandlerOptions<TRouter extends AnyRouter> = {
-  req: Drash.Request;
-  res: Drash.Response;
+  req: Request;
+  res: Response;
   endpoint: string;
 } & DrashHandlerOptions<TRouter>;
